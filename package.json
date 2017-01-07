@@ -1,6 +1,6 @@
 {
   "name": "nebula-routing",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Web components (built with Polymer) to support client-side routing",
   "private": true,
   "license": "ISC",
