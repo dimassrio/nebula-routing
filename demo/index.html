@@ -5,7 +5,6 @@
     <title>nebula-routing demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../core.js/client/core.min.js"></script>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
@@ -25,7 +24,7 @@
       <demo-snippet>
         <template is="dom-bind">
           <nebula-location data="{{location}}"></nebula-location>
-          <div>[[location.pathname]]</div>
+          <div>[[location.hostname]]</div>
         </template>
       </demo-snippet>
     </div>
@@ -34,7 +33,6 @@
       <h3>Route</h3>
       <demo-snippet>
         <template is="dom-bind">
-          <nebula-location location="{{location}}"></nebula-location>
           <nebula-route id="route" pattern="/:section/:page(/)(/*)" data="{{route}}"></nebula-route>
           <div>
             <button onclick="route.set('path', '/demo/page1')">Page 1</button>

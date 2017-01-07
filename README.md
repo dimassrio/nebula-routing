@@ -42,7 +42,14 @@ Use something like `iron-pages` to perform conditional rendering of page element
 </iron-pages>
 ```
 
-For more information on element properties and methods see the element API documentation.
+Use the `redirect` method to change the route based on a new path, or parameter:
+
+```
+this.$.route.redirect('/test2'})
+this.$.route.redirect({page: 'test2'})
+```
+
+*For more information on element properties and methods see the element API documentation.*
 
 ## Contributing
 
