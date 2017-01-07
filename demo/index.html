@@ -1,0 +1,52 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>nebula-routing demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../core.js/client/core.min.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-pages/iron-pages.html">
+    <link rel="import" href="../nebula-routing.html">
+    <style is="custom-style" include="demo-pages-shared-styles">
+      iron-pages {
+        margin-top: 20px;
+        height: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="vertical-section-container centered">
+      <h3>Location</h3>
+      <demo-snippet>
+        <template is="dom-bind">
+          <nebula-location data="{{location}}"></nebula-location>
+          <div>[[location.pathname]]</div>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Route</h3>
+      <demo-snippet>
+        <template is="dom-bind">
+          <nebula-location location="{{location}}"></nebula-location>
+          <nebula-route id="route" pattern="/:section/:page(/)(/*)" data="{{route}}"></nebula-route>
+          <div>
+            <button onclick="route.set('path', '/demo/page1')">Page 1</button>
+            <button onclick="route.set('path', '/demo/page2')">Page 2</button>
+          </div>
+          <iron-pages selected="{{route.page}}" attr-for-selected="name">
+            <div name="page1">Page 1</div>
+            <div name="page2">Page 2</div>
+          </iron-pages>
+        </template>
+      </demo-snippet>
+    </div>
+
+  </body>
+</html>

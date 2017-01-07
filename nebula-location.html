@@ -1,0 +1,53 @@
+<!--
+@license
+Copyright (c) 2016 Ars Nebula LLC.
+This code may be used under the terms found in LICENSE.md of this repository.
+-->
+
+<script src="../qs/dist/qs.min.js"></script>
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`<nebula-location>` is a custom element to support data-binding to `window.location` and parsing query parameters. Location data is automatically updated when a `window.popstate` event is triggered.
+
+@demo demo/index.html
+-->
+
+<script>
+  Polymer({
+    is: 'nebula-location',
+    hostAttributes: {
+      'hidden': true
+    },
+    properties: {
+      /**
+       * The current **window.location**.
+       * The value is updated on a **window.popstate** event.
+       */
+      data: {
+        type: Object,
+        notify: true,
+        readOnly: true,
+        value: function() {
+          return window.location
+        }
+      },
+      /**
+       * Query parameters parsed from the **location.search** property.
+       */
+      queryParams: {
+        type: Object,
+        notify: true,
+        computed: '_computeQueryParams(location)'
+      }
+    },
+    _computeQueryParams(location) {
+      return QS(location.search).getAll()
+    },
+    created() {
+      window.addEventListener('popstate', function(e) {
+        this._setData(window.location)
+      }.bind(this))
+    }
+  })
+</script>
