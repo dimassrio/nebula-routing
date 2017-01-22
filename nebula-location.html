@@ -41,13 +41,32 @@ This code may be used under the terms found in LICENSE.md of this repository.
         computed: '_computeQueryParams(location)'
       }
     },
+    /**
+    * Computed property handler to parse search query parameters.
+    */
     _computeQueryParams(location) {
       return QS(location.search).getAll()
     },
-    created() {
-      window.addEventListener('popstate', function(e) {
-        this._setData(window.location)
-      }.bind(this))
+    /**
+    * Window event handler triggered when **window.popstate** is fired.
+    * Updates the **location.search** property.
+    */
+    _onPopState(e) {
+      this._setData(window.location)
+    },
+    /**
+    * Lifecycle event handler triggered when element is attached to the DOM.
+    * Adds a **window.popstate** event listener.
+    */
+    attached() {
+      window.addEventListener('popstate', this._onPopState.bind(this))
+    },
+    /**
+    * Lifecycle event handler triggered when element is detached from the DOM.
+    * Removes **window.popstate** event listener.
+    */
+    detached() {
+      window.removeEventListener('popstate', this._onPopState.bind(this))
     }
   })
 </script>

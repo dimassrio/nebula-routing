@@ -10,9 +10,9 @@ This code may be used under the terms found in LICENSE.md of this repository.
 <!--
 `<nebula-route>` is a custom element that parses and tests a URL path against a specified pattern.
 
-<strong>Pattern Formats</strong>
+<b>Pattern Formats</b>
 
-The pattern can include named parameters, optional segments, and wildcards. To define a named parameter, using a colon followed by the parameter name. To define an optional segment, surround it with parentheses. For a wildcard, use an asterisk.
+The `pattern` property value can include named parameters, optional segments, and wildcards. To define a named parameter, using a colon followed by the parameter name. To define an optional segment, surround it with parentheses. For a wildcard, use an asterisk.
 
 The following examples demonstrate various ways you can combine named parameters, optional segments and wildcards to match any route path. The use of optional segments and wildcards provide the ability to either precisely match specific url paths, or perform partial matching.
 
@@ -25,9 +25,9 @@ The following examples demonstrate various ways you can combine named parameters
 /(:segment)(/:feature)(/)(/*)
 ```
 
-<i>See:</i> The [url-pattern](https://github.com/snd/url-pattern/blob/master/README.md) library is used to perform parsing. For more information on pattern matching, please refer to the library documentation.
+<i>For more information on pattern matching, refer to the [url-pattern](https://github.com/snd/url-pattern/blob/master/README.md) library documentation.</i>
 
-<strong>Route Parameters</strong>
+<b>Route Parameters</b>
 
 If the route pattern is matched, the `data` property is updated with any parameters parsed from the path. If the route pattern contains one or more wildcards, then a special `_` key/value is provided with the wildcard segments in the path.
 
@@ -94,7 +94,7 @@ el.redirect({
         value: '*'
       },
       /**
-       * The parsed route data if the route was matched, otherwise null.
+       * The parsed route data if the route was matched, otherwise **null**.
        */
       data: {
         type: Object,
@@ -120,8 +120,8 @@ el.redirect({
       return match
     },
     /**
-     * Changes the current window location using the History API (using history.pushState).
-     * A *window.popstate* event is manually fired to ensure all location elements are updated.
+     * Changes the current window location using the History API (using **history.pushState**).
+     * A **window.popstate** event is manually fired to ensure all location elements are updated.
      */
     redirect(target) {
       // create a url pattern parser so it can stringify

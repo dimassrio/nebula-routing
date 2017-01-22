@@ -1,21 +1,23 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/arsnebula/nebula-routing)
 # \<nebula-routing\>
 
-A set of web components built with Polymer that provides a client-side routing solution for web applications using the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History).
+A set of web components (built with Polymer) that provides a client-side routing solution for web applications using the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History).
+
+- Parses the browser **window.location** pathname and search query parameters.
+- Pattern matches can include named parameters, optional sections and wildcards.
 
 ## Installation
 
-```
-$ bower install arsnebula/nebula-router
+```sh
+$ bower install -S arsnebula/nebula-router
 ```
 
 ## Usage
 
-Import the location and route elements:
+Import the element:
 
-```
-<link rel="import" href="bower_components/nebula-routing/nebula-location.html">
-<link rel="import" href="bower_components/nebula-routing/nebula-route.html">
+```html
+<link rel="import" href="/bower_components/nebula-routing/nebula-routing.html">
 ```
 
 Add the elements to any component where you want to do conditional rendering based on route information:
@@ -35,7 +37,7 @@ Add the elements to any component where you want to do conditional rendering bas
 
 Use something like `iron-pages` to perform conditional rendering of page elements:
 
-```
+```html
 <iron-pages selected="{{route.page}}" attr-for-selected="name">
   <div name="test1">Test 1</div>
   <div name="test2">Test 2</div>
@@ -44,7 +46,7 @@ Use something like `iron-pages` to perform conditional rendering of page element
 
 Use the `redirect` method to change the route based on a new path, or parameter:
 
-```
+```js
 this.$.route.redirect('/test2'})
 this.$.route.redirect({page: 'test2'})
 ```
