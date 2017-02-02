@@ -1,10 +1,15 @@
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/arsnebula/nebula-routing)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/arsnebula/nebula-routing) [![Build Status](https://saucelabs.com/buildstatus/arsnebula)](https://saucelabs.com/beta/builds/882247f17e51411e8f06708af6bab024)
+
+[![Build Status](https://saucelabs.com/browser-matrix/arsnebula.svg)](https://saucelabs.com/beta/builds/882247f17e51411e8f06708af6bab024)
+
 # \<nebula-routing\>
 
-A set of web components (built with Polymer) that provides a client-side routing solution for web applications using the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History).
+Web components for declarative client-side routing.
 
-- Parses the browser **window.location** pathname and search query parameters.
-- Pattern matches can include named parameters, optional sections and wildcards.
+- Parses the browser **window.location** pathname and search query parameters
+- Pattern matching supports named parameters, optional sections and wildcards
+- Updates the browser URL on the client using the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History)
+- Supports using parameters to interpolate URL changes
 
 ## Installation
 

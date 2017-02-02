@@ -15,7 +15,8 @@
   "keywords": [
     "polymer",
     "web-components",
-    "routing"
+    "routing",
+    "router"
   ],
   "main": "nebula-routing.html",
   "dependencies": {
@@ -28,8 +29,6 @@
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
     "web-component-tester": "Polymer/web-component-tester#^5.0.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
-    "app-localize-behavior": "PolymerElements/app-localize-behavior#^0.10.0",
-    "iron-pages": "PolymerElements/iron-pages#^1.0.8",
-    "core.js": "zloirock/core-js#^2.4.1"
+    "iron-pages": "PolymerElements/iron-pages#^1.0.8"
   }
 }

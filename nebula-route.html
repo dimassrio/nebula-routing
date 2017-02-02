@@ -4,8 +4,8 @@ Copyright (c) 2016 Ars Nebula LLC.
 This code may be used under the terms found in LICENSE.md of this repository.
 -->
 
-<script src="../url-pattern/lib/url-pattern.js"></script>
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="url-pattern.html">
 
 <!--
 `<nebula-route>` is a custom element that parses and tests a URL path against a specified pattern.
@@ -94,7 +94,7 @@ el.redirect({
         value: '*'
       },
       /**
-       * The parsed route data if the route was matched, otherwise **null**.
+       * The parsed route data if the route was matched, otherwise `null`.
        */
       data: {
         type: Object,
@@ -110,7 +110,7 @@ el.redirect({
      * If the path is matched, the <b><i>route</i></b> property is updated.
      * If the path is not matched, the <b><i>route</i></b> property is set to <b><i>null</i></b>.
      */
-    _match(path, pattern) {
+    _match: function(path, pattern) {
       if (!(path && pattern)) return
 
       var parser = new UrlPattern(pattern)
@@ -123,7 +123,7 @@ el.redirect({
      * Changes the current window location using the History API (using **history.pushState**).
      * A **window.popstate** event is manually fired to ensure all location elements are updated.
      */
-    redirect(target) {
+    redirect: function(target) {
       // create a url pattern parser so it can stringify
       // a proper url from parameters
       var parser = new UrlPattern(this.pattern)
@@ -138,10 +138,9 @@ el.redirect({
       } else if (typeof target === 'object') {
         history.pushState(null, null, parser.stringify(target))
       } else {
-        throw Object.assign(new Error(), {
-          message: 'The redirect target argument is invalid',
-          detail: target 
-        })
+        var error = new Error('The redirect target argument is invalid')
+        error.detail = target
+        throw error
       }
 
       // force a popstate event since default behavior is that

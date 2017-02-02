@@ -1,5 +1,15 @@
 # Change Log
 
+## [v1.0.3](https://github.com/arsnebula/nebula-routing/releases/tag/v1.0.3) (2017-02-1)
+
+- Moved script dependencies into HTML import files.
+- Changed test configuration to include IE/Edge and ES5 compatability.
+- Fixed method declaration issue with IE/Edge.
+- Added test index for test suites.
+- Added tests for polyfill and native shadow dom.
+- Added test configuration for Sauce Labs.
+- Added Sauce Labs badges to README.
+
 ## [v1.0.2](https://github.com/arsnebula/nebula-routing/releases/tag/v1.0.2) (2017-01-21)
 
 - Updated project description.
