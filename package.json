@@ -1,6 +1,6 @@
 {
   "name": "nebula-routing",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Web components for declarative client-side routing.",
   "private": true,
   "license": "ISC",

@@ -23,13 +23,7 @@ This code may be used under the terms found in LICENSE.md of this repository.
       data: {
         type: String,
         notify: true,
-        readOnly: true,
-        value: function() {
-          return {
-            pathname: window.location.pathname,
-            queryParams: QS(window.location.search).getAll()
-          }
-        }
+        readOnly: true
       }
     },
     /**
@@ -48,6 +42,10 @@ This code may be used under the terms found in LICENSE.md of this repository.
     */
     attached: function() {
       this.listen(window, 'popstate', '_onPopState')
+      this._setData({
+        pathname: window.location.pathname,
+        queryParams: QS(window.location.search).getAll()
+      })
     },
     /**
     * Lifecycle event handler triggered when element is detached from the DOM.

@@ -1,5 +1,9 @@
 # Change Log
 
+## [v1.1.2](https://github.com/arsnebula/nebula-routing/releases/tag/v1.1.2) (2017-02-25)
+
+- Added missing code from prior version push.
+
 ## [v1.1.1](https://github.com/arsnebula/nebula-routing/releases/tag/v1.1.1) (2017-02-25)
 
 - Changed location data to initialize on attached rather than default property value.
