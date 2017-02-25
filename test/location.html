@@ -26,7 +26,7 @@
           assert.equal(el.is, 'nebula-location')
         })
         test('data property mirrors window.location', function() {
-          assert.equal(el.data, window.location)
+          assert.equal(el.data.pathname, window.location.pathname)
         })
       })
     </script>

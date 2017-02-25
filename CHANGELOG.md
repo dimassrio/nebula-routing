@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.1.0](https://github.com/arsnebula/nebula-routing/releases/tag/v1.1.0) (2017-02-25)
+
+- Changed location data to include only pathname and queryParams. **[BREAKING]**
+- Fixed bug with location data not triggering notify on popstate event.
+- Removed queryParams property (merged into data). **[BREAKING]**
+- Changed event listener registration to use Polymer listen/unlisten.
+
 ## [v1.0.3](https://github.com/arsnebula/nebula-routing/releases/tag/v1.0.3) (2017-02-1)
 
 - Moved script dependencies into HTML import files.

@@ -24,7 +24,7 @@
       <demo-snippet>
         <template is="dom-bind">
           <nebula-location data="{{location}}"></nebula-location>
-          <div>[[location.hostname]]</div>
+          <div>[[location.pathname]]</div>
         </template>
       </demo-snippet>
     </div>
@@ -32,8 +32,8 @@
     <div class="vertical-section-container">
       <h3>Route</h3>
       <demo-snippet>
-        <template is="dom-bind">
-          <nebula-route id="route" pattern="/:section/:page(/)(/*)" data="{{route}}"></nebula-route>
+        <template is="dom-bind" id="routeDemo">
+          <nebula-route id="route" path="{{path}}" pattern="/:section/:page(/)(/*)" data="{{route}}"></nebula-route>
           <div>
             <button onclick="route.set('path', '/demo/page1')">Page 1</button>
             <button onclick="route.set('path', '/demo/page2')">Page 2</button>
@@ -45,6 +45,10 @@
         </template>
       </demo-snippet>
     </div>
+
+    <script>
+      routeDemo.path = "/demo/page1"
+    </script>
 
   </body>
 </html>
