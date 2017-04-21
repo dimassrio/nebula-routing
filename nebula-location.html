@@ -1,58 +1,80 @@
-<!--
-@license
-Copyright (c) 2016 Ars Nebula LLC.
-This code may be used under the terms found in LICENSE.md of this repository.
--->
-
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../nebula-element-mixin/nebula-element-mixin.html">
 <link rel="import" href="qs.html">
 
-<!--
-`<nebula-location>` is a custom element to support data-binding to the pathname and parsed query parameters of `window.location`. Location data is automatically updated when a `window.popstate` event is triggered.
-
-@demo demo/index.html
--->
-
 <script>
-  Polymer({
-    is: 'nebula-location',
-    hostAttributes: {
-      'hidden': true
-    },
-    properties: {
-      data: {
-        type: String,
-        notify: true,
-        readOnly: true
+(function() {
+  'use strict'
+
+  // symbols for private members
+  const parseLocation = Symbol()
+
+  // symbols for protected members
+  const listen = Symbol.for('Nebula.ElementMixin.listen')
+  const unlisten = Symbol.for('Nebula.ElementMixin.unlisten')
+
+  /**
+   * Validate forms and data with Validate.js
+   */
+  class NebulaLocation extends Nebula.ElementMixin(Polymer.Element) {
+
+    /**
+     * Gets the custom element name.
+     * @type {string}
+     */
+    static get is() { return 'nebula-location' }
+
+    /**
+     * Gets the property definitions for data binding.
+     * @type {Object}
+     * @property {Object} data - Parsed location data.
+     */
+    static get properties() {
+      return {
+        data: {
+          type: Object,
+          notify: true,
+          readOnly: true
+        }
       }
-    },
-    /**
-    * Window event handler triggered when **window.popstate** is fired.
-    * Updates the **location.search** property.
-    */
-    _onPopState: function(e) {
-      this._setData({
-        pathname: window.location.pathname,
-        queryParams: QS(window.location.search).getAll()
-      })
-    },
-    /**
-    * Lifecycle event handler triggered when element is attached to the DOM.
-    * Adds a **window.popstate** event listener.
-    */
-    attached: function() {
-      this.listen(window, 'popstate', '_onPopState')
-      this._setData({
-        pathname: window.location.pathname,
-        queryParams: QS(window.location.search).getAll()
-      })
-    },
-    /**
-    * Lifecycle event handler triggered when element is detached from the DOM.
-    * Removes **window.popstate** event listener.
-    */
-    detached: function() {
-      this.unlisten(window, 'popstate', '_onPopState')
     }
-  })
+
+    /**
+     * Lifecycle callback handler triggered when data-binding initialization is complete.
+     */
+    ready() {
+      super.ready();
+      this.setAttribute('hidden', '')
+    }
+
+    /**
+     * Lifecycle callback handler triggered when element is attached to the DOM.
+     */
+    connectedCallback() {
+      super.connectedCallback()
+      this[listen](window, 'popstate', this[parseLocation])
+      this[parseLocation]()
+    }
+
+    /**
+     * Lifecycle callback handler triggered when element is detached from the DOM.
+     */
+    disconnectedCallback() {
+      super.disconnectedCallback()
+      this[unlisten](window, 'popstate', this[parseLocation])
+    }
+
+    /**
+     * Parse the window location and update location data.
+     */
+    [parseLocation]() {
+      this._setData({
+        pathname: window.location.pathname,
+        queryParams: QS(window.location.search).getAll()
+      })
+    }
+  }
+
+  customElements.define(NebulaLocation.is, NebulaLocation)
+}())
 </script>

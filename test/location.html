@@ -5,14 +5,14 @@
     <title>nebula-location</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
     <link rel="import" href="../nebula-location.html">
   </head>
   <body>
     <test-fixture id="basic">
       <template>
-        <nebula-location data="{{location}}"></nebula-location>
+        <nebula-location></nebula-location>
       </template>
     </test-fixture>
 
@@ -22,11 +22,16 @@
         setup(function() {
           el = fixture('basic')
         })
-        test('element is created', function() {
-          assert.equal(el.is, 'nebula-location')
-        })
-        test('data property mirrors window.location', function() {
+        test('data property has current pathname', function() {
           assert.equal(el.data.pathname, window.location.pathname)
+        })
+        test('change event is fired on property change', function() {
+          el.addEventListener('data-changed', (e) => {
+            assert.equal(el.data, e.detail.data)                
+          })
+          el.set('data', {
+            pathname: 'test'
+          })
         })
       })
     </script>

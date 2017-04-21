@@ -1,53 +1,61 @@
 <!doctype html>
-
 <html>
   <head>
     <title>nebula-routing</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../iron-pages/iron-pages.html">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no">
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <link rel="import" href="../../polymer/polymer-element.html">
+    <link rel="import" href="../../polymer/lib/mixins/mutable-data.html">
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
     <link rel="import" href="../nebula-routing.html">
-    <style is="custom-style" include="demo-pages-shared-styles">
-      iron-pages {
-        margin-top: 20px;
-        height: 1rem;
-      }
-    </style>
+    <custom-style>
+      <style>
+        body {
+          font-family: sans-serif;
+          font-size: 14px;
+          margin: 0;
+          padding: 16px;
+          background-color:white;          
+        }
+        demo-snippet {
+          display: block;
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+          padding: 8px 16px;
+          margin-bottom: 40px;
+        }
+      </style>
+    </custom-style>
   </head>
   <body>
 
-    <div class="vertical-section-container"> 
-      <h3>Location</h3>
-      <demo-snippet>
-        <template is="dom-bind">
+    <h3>Location</h3>
+    <demo-snippet>
+      <dom-bind>
+        <template>
           <nebula-location data="{{location}}"></nebula-location>
-          <div>[[location.pathname]]</div>
+          <p>Pathname: <b>[[location.pathname]]</b></p>
         </template>
-      </demo-snippet>
-    </div>
+      </dom-bind>
+    </demo-snippet>
 
-    <div class="vertical-section-container">
-      <h3>Route</h3>
-      <demo-snippet>
-        <template is="dom-bind" id="routeDemo">
+    <h3>Route</h3>
+    <demo-snippet>
+      <dom-bind id="demo">
+        <template>
           <nebula-route id="route" path="{{path}}" pattern="/:section/:page(/)(/*)" data="{{route}}"></nebula-route>
+          <p>
           <div>
             <button onclick="route.set('path', '/demo/page1')">Page 1</button>
             <button onclick="route.set('path', '/demo/page2')">Page 2</button>
           </div>
-          <iron-pages selected="{{route.page}}" attr-for-selected="name">
-            <div name="page1">Page 1</div>
-            <div name="page2">Page 2</div>
-          </iron-pages>
+          <p>Page: <b>[[route.page]]</b></p>
         </template>
-      </demo-snippet>
-    </div>
+      </dom-bind>
+    </demo-snippet>
 
     <script>
-      routeDemo.path = "/demo/page1"
+      demo.path = "/demo/page1"
     </script>
 
   </body>

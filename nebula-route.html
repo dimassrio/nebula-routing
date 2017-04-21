@@ -1,153 +1,116 @@
-<!--
-@license
-Copyright (c) 2016 Ars Nebula LLC.
-This code may be used under the terms found in LICENSE.md of this repository.
--->
-
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../nebula-element-mixin/nebula-element-mixin.html">
 <link rel="import" href="url-pattern.html">
 
-<!--
-`<nebula-route>` is a custom element that parses and tests a URL path against a specified pattern.
-
-<b>Pattern Formats</b>
-
-The `pattern` property value can include named parameters, optional segments, and wildcards. To define a named parameter, using a colon followed by the parameter name. To define an optional segment, surround it with parentheses. For a wildcard, use an asterisk.
-
-The following examples demonstrate various ways you can combine named parameters, optional segments and wildcards to match any route path. The use of optional segments and wildcards provide the ability to either precisely match specific url paths, or perform partial matching.
-
-```text
-/
-/*
-/:segment
-/:segment(/)
-/(:segment)(/)(/*)
-/(:segment)(/:feature)(/)(/*)
-```
-
-<i>For more information on pattern matching, refer to the [url-pattern](https://github.com/snd/url-pattern/blob/master/README.md) library documentation.</i>
-
-<b>Route Parameters</b>
-
-If the route pattern is matched, the `data` property is updated with any parameters parsed from the path. If the route pattern contains one or more wildcards, then a special `_` key/value is provided with the wildcard segments in the path.
-
-The following example demonstrates route data created from matching a sample path to a pattern that contains named parameters, optional segments and a wildcard:
-
-```js
-var el = document.getElementById('#route')
-el.pattern = '/(:module)(/:page)(/)(/*)'
-el.path = '/accounts/login/oauth'
-```
-
-If the route was matched, the `data` property would contain the following:
-
-```
-{
-  "_": "oauth"
-  "module": "accounts",
-  "page": "login"
-}
-```
-
-If the route is not matched, the `data` property is set to `null`.
-
-<strong>Changing the Route</strong>
-
-The element also provides an easy way to update the current browser location using the History pushState API. The `redirect` method accepts a path string, or you can pass an object with any named parameters defined in the route pattern.
-
-The following example demonstrates how to redirect using a path, or a set of parameters:
-
-```
-var el = document.getElementById('#route')
-
-// update the route using a path
-el.redirect('/accounts/register')
-
-// update the route using parameters
-el.redirect({
-  'module': 'accounts',
-  'page': 'register'
-})
-```
-
-@demo demo/index.html
--->
-
 <script>
-  Polymer({
-    is: 'nebula-route',
-    hostAttributes: {
-      'hidden': true
-    },
-    properties: {
-      /**
-       * A path to parse and evaluate against the route pattern.
-       */
-      path: {
-        type: String
-      },
-      /**
-       * A pattern to evaluate against the current route path.
-       */
-      pattern: {
-        type: String,
-        value: '*'
-      },
-      /**
-       * The parsed route data if the route was matched, otherwise `null`.
-       */
-      data: {
-        type: Object,
-        notify: true,
-        readOnly: true
-      }
-    },
-    observers: [
-      '_match(path, pattern)'
-    ],
+(function() {
+  'use strict'
+
+  // symbols for private members
+  const matchPath = Symbol()
+
+  // symbols for protected members
+  const observe = Symbol.for('Nebula.ElementMixin.observe')
+
+  class NebulaRoute extends Nebula.ElementMixin(Polymer.Element) {
+
     /**
-     * Parses the path and evaluates the pattern for a match.
-     * If the path is matched, the <b><i>route</i></b> property is updated.
-     * If the path is not matched, the <b><i>route</i></b> property is set to <b><i>null</i></b>.
+     * Gets the custom element name.
+     * @type {string}
      */
-    _match: function(path, pattern) {
+    static get is() { return 'nebula-route' }
+
+    /**
+     * Gets the property definitions for data binding.
+     * @type {Object}
+     * @property {string} path - A path to parse and evaluate against the route pattern.
+     * @property {string} pattern - A pattern to evaluate against the current route path.
+     * @property {Object} data - The parsed route data if the route was matched.
+     */
+    static get properties() {
+      return {
+        path: {
+          type: String
+        },
+        pattern: {
+          type: String,
+          value: '*'
+        },
+        data: {
+          type: Object,
+          notify: true,
+          readOnly: true
+        }
+      }
+    }
+
+    /**
+     * Lifecycle callback invoked when a new element instance is created.
+     */
+    constructor() {
+      super()
+      this[observe]('path, pattern', this[matchPath])
+    }
+
+    /**
+     * Lifecycle callback handler triggered when data-binding initialization is complete.
+     */
+    ready() {
+      super.ready();
+      this.setAttribute('hidden', '')
+    }
+
+    /** Parses the path and evaluates the pattern for a match. */
+    [matchPath](path, pattern) {
       if (!(path && pattern)) return
 
-      var parser = new UrlPattern(pattern)
-      var match = parser.match(path)
+      const parser = new UrlPattern(pattern)
+      const match = parser.match(path)
 
       this._setData(match)
       return match
-    },
+    }
+
     /**
-     * Changes the current window location using the History API (using **history.pushState**).
-     * A **window.popstate** event is manually fired to ensure all location elements are updated.
+     * Changes the window location using the History API.
+     * @param {string | Object} target - The target route.
+     * @param {boolean} replace - Whether to push or replace the current path.
      */
-    redirect: function(target) {
+    redirect(target, replace = false) {
       // create a url pattern parser so it can stringify
       // a proper url from parameters
-      var parser = new UrlPattern(this.pattern)
+      const parser = new UrlPattern(this.pattern)
+      let url
 
       // if target is empty, then default stringify (all non-optional parts of pattern)
       // if target is a raw string, then just push it
       // if target is an object stringify with params
       if (!target) {
-        history.pushState(null, null, parser.stringify())
+        url = parser.stringify()
       } else if (typeof target === 'string') {
-        history.pushState(null, null, target)
+        url = target
       } else if (typeof target === 'object') {
-        history.pushState(null, null, parser.stringify(target))
+        url = parser.stringify(target)
       } else {
-        var error = new Error('The redirect target argument is invalid')
+        const error = new Error('The redirect target argument is invalid')
         error.detail = target
         throw error
       }
 
+      // push or replace the browser location without a page refresh
+      if (replace) {
+        history.replaceState(null, null, url)
+      } else {
+        history.pushState(null, null, url)
+      }
+
       // force a popstate event since default behavior is that
       // one is not fired on pushstate
-      this.dispatchEvent(new PopStateEvent('popstate', {
-        bubbles: true
-      }))
+      window.dispatchEvent(new PopStateEvent('popstate'))
     }
-  })
+
+  }
+
+  customElements.define(NebulaRoute.is, NebulaRoute)
+}())
 </script>

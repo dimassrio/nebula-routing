@@ -4,6 +4,8 @@ module.exports = {
   notify: false,
   files: '**/*.html',
   server: {
-    baseDir: ['.', 'bower_components']
-  }
+    baseDir: ['.', 'bower_components'],
+    index: 'demo/index.html'
+  },
+  startPath: 'demo/index.html'
 }

@@ -1,5 +1,10 @@
 # Change Log
 
+## [v2.0.0](https://github.com/arsnebula/nebula-routing/releases/tag/v2.0.0) (2017-04-20)
+
+- Upgraded to Polymer v2 ES2015 class-style element.
+- Added interceptor to handle anchor links for local origin routes.
+
 ## [v1.1.2](https://github.com/arsnebula/nebula-routing/releases/tag/v1.1.2) (2017-02-25)
 
 - Added missing code from prior version push.

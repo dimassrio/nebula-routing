@@ -1,7 +1,8 @@
 {
   "name": "nebula-routing",
-  "description": "Web components for declarative client-side routing.",
+  "description": "A client-side router for single-page applications.",
   "license": "ISC",
+  "private": true,
   "authors": [
     "Chris Beckett <chrisb@arsnebula.com>"
   ],
@@ -14,21 +15,29 @@
   ],
   "keywords": [
     "polymer",
+    "webcomponents",
     "web-components",
+    "customelements",
+    "custom-elements",
     "routing",
     "router"
   ],
   "main": "nebula-routing.html",
+  "pages": {
+    "nebula-intercept": "docs/nebula-intercept",
+    "nebula-location": "docs/nebula-location",
+    "nebula-route": "docs/nebula-route"
+  },
+  "demos": {
+    "Demo": "demo/index.html"
+  },
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.7.1",
+    "polymer": "Polymer/polymer#>=2.0.0-rc.1 <3.0",
     "qs": "nire0510/qs#^0.4.8",
-    "url-pattern": "snd/url-pattern#^1.0.1"
+    "url-pattern": "snd/url-pattern#^1.0.1",
+    "nebula-element-mixin": "arsnebula/nebula-element-mixin#^2.0.0"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "web-component-tester": "Polymer/web-component-tester#^5.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
-    "iron-pages": "PolymerElements/iron-pages#^1.0.8"
+    "web-component-tester": "polymer/web-component-tester#>=6.0.0 || 6.0.0-prerelease.5"
   }
 }

@@ -5,7 +5,7 @@
     <title>nebula-route</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
     <link rel="import" href="../nebula-route.html">
   </head>
@@ -13,13 +13,13 @@
 
     <test-fixture id="no-match">
       <template>
-        <nebula-route path="/" pattern="/test"></nebula-route>
+        <nebula-route path="/" pattern="/:page"></nebula-route>
       </template>
     </test-fixture>
 
     <test-fixture id="match">
       <template>
-        <nebula-route path="/test" pattern="/test"></nebula-route>
+        <nebula-route path="/test" pattern="/:page"></nebula-route>
       </template>
     </test-fixture>
 
@@ -28,9 +28,6 @@
         var el
         setup(function() {
           el = fixture('no-match')
-        })
-        test('element is created', function() {
-          assert.equal(el.is, 'nebula-route')
         })
         test('data is null', function() {
           assert.isNotOk(el.data)
@@ -42,11 +39,9 @@
         setup(function() {
           el = fixture('match')
         })
-        test('element is created', function() {
-          assert.equal(el.is, 'nebula-route')
-        })
         test('data is ok', function() {
           assert.isOk(el.data)
+          assert.equal(el.data.page, 'test')
         })
       })
 
