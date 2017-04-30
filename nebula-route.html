@@ -60,7 +60,13 @@
       this.setAttribute('hidden', '')
     }
 
-    /** Parses the path and evaluates the pattern for a match. */
+    /**
+      * Parses the path and evaluates the pattern for a match.
+      * @param {string} path The path to match against the current pattern.
+      * @param {string} pattern The pattern to match.
+      * @return {boolean} True if the path matches the pattern, otherwise false.
+      * @private
+    */
     [matchPath](path, pattern) {
       if (!(path && pattern)) return
 
@@ -71,16 +77,15 @@
       return match
     }
 
-    /**
-     * Changes the window location using the History API.
-     * @param {string | Object} target - The target route.
-     * @param {boolean} replace - Whether to push or replace the current path.
+    /** 
+     * Evaluates the route target argument and generates a new URL.
      */
-    redirect(target, replace = false) {
+    getRouteUrl(target) {
+      let url
+
       // create a url pattern parser so it can stringify
       // a proper url from parameters
       const parser = new UrlPattern(this.pattern)
-      let url
 
       // if target is empty, then default stringify (all non-optional parts of pattern)
       // if target is a raw string, then just push it
@@ -97,6 +102,17 @@
         throw error
       }
 
+      return url
+    }
+
+    /**
+     * Changes the window location using the History API.
+     * @param {string | Object} target - The target route.
+     * @param {boolean} replace - Whether to push or replace the current path.
+     */
+    redirect(target, replace = false) {
+      const url = this.getRouteUrl(target)
+
       // push or replace the browser location without a page refresh
       if (replace) {
         history.replaceState(null, null, url)
@@ -107,6 +123,8 @@
       // force a popstate event since default behavior is that
       // one is not fired on pushstate
       window.dispatchEvent(new PopStateEvent('popstate'))
+
+      return url
     }
 
   }

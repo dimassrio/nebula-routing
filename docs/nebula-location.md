@@ -21,7 +21,7 @@ Location data is provided as a single object to make it easy for property observ
 ```json
 {
   "pathname": "/",
-  "hash": "#overview",
+  "hash": "#a-hash",
   "searchParams": {
     "param1": "value",
     "param2": "value"

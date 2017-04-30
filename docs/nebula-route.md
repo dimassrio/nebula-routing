@@ -80,6 +80,16 @@ A pattern to evaluate against the current route path.
 
 The parsed route data if the route was matched.
 
+### Methods
+
+#### getRouteUrl([target]) : string
+
+Generates a new route Url for the target. The `target` argument can be a `string` containing a path, or an `Object` with route pattern parameters.
+
+#### redirect(target) : string
+
+Redirect the current location to a new route path. The `target` argument can be a `string` containing a path, or an `Object` with route pattern parameters. The new route Url is returned.
+
 ### Events
 
 #### data-changed : CustomEvent

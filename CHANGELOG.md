@@ -1,5 +1,11 @@
 # Change Log
 
+## [v2.1.0](https://github.com/arsnebula/nebula-routing/releases/tag/v2.1.0) (2017-04-30)
+
+- Converted intercept handler to custom element.
+- Fixed intercept handler defect with accessing missing event properties.
+- Added tests and docs for new intercept element.
+
 ## [v2.0.0](https://github.com/arsnebula/nebula-routing/releases/tag/v2.0.0) (2017-04-20)
 
 - Upgraded to Polymer v2 ES2015 class-style element.

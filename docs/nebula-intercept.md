@@ -1,29 +1,43 @@
-# Nebula.Routing.intercept
+# \<nebula-intercept\>
 
-`Nebula.Routing.intercept` is a global event handler to intercept, evaluate and process click events on anchor tags that contain client-side routes.
+The `<nebula-intercept>` custom element is a non-visual component that can intercept `click` events on anchor tags that target local origin paths, and process the route change on the client using the browser History API.
+
+By default, the element targets its parent element. The typical use case is to add a single instance of the intercept to your top-level application element, or directly in the `body` tag of a web page. By setting the `target` property of the element to an alternative parent node, it is possible to control the scope of events that are intercepted.
+
+Only standard clicks are intercepted. If the user right clicks an element to open the link in a new tab or window, the event is ignored.
+
+## Import
+
+```html
+<link rel="import" href="/bower_components/nebula-routing/nebula-intercept.html">
+```
 
 ## Usage
 
-The intercept handler is included by default with the `nebula-routing.html` import. To use routing without the intercept, you can either:
+Add an instance of the element to interecept all events that bubble through the parent node.
 
-- import the `nebula-location` and `nebula-route` elements individually
-
-- manually control the lifecycle of the intercept handler by adding and removing the intercept event handler
-
-The following demonstrates removing the intercept handler from the `window` object.
-
-```js
-window.removeEventListener('click', Nebula.Routing.intercept)
+```html
+<nebula-intercept id="intercept"></nebula-intercept>
 ```
 
-When the intercept handler is active, it evaluates the path of `click` events for anchor elements. This ensures you can wrap other elements such as buttons or icons with anchor elements, and it will detect and intercept them correctly, even if the event target was not the anchor element.
+To target a specific node, set the `target` property. In the example below, setting the target to the `document.body` will automatically intercept all click events for the entire page.
 
-> Only standard clicks are intercepted. If the user right clicks an element to open the link in a new tab or window, the event is ignored.
+```js
+  this.$.intercept.target = document.body
+```
 
-Any anchor element with an `href` attribute with the same origin (protocol, host and port) as the current page, and the default target of `_self` will be intercepted and handled using the **History API**.
+Any anchor element with an `href` that matches the local origin will be intercepted.
 
 ```html
 <a href="/account/login">
+  Login
+</a>
+```
+
+Anchor tags with an `href` that is not local origin, or that has a target other than the default will be ignored.
+
+```html
+<a href="https://www.wikipedia.org" target="_blank">
   Login
 </a>
 ```
@@ -43,3 +57,11 @@ To force the intercept to use the History API `replaceState` rather than the def
   Login
 </a>
 ```
+
+## API Reference
+
+### Properties
+
+#### target : Object
+
+The target node for the element event listener. If unspecified, the default will be the parent element that contains the intercept element instance.

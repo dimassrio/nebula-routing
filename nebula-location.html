@@ -41,6 +41,7 @@
 
     /**
      * Lifecycle callback handler triggered when data-binding initialization is complete.
+     * @public
      */
     ready() {
       super.ready();
@@ -66,10 +67,12 @@
 
     /**
      * Parse the window location and update location data.
+     * @private
      */
     [parseLocation]() {
       this._setData({
         pathname: window.location.pathname,
+        hash: window.location.hash,
         queryParams: QS(window.location.search).getAll()
       })
     }

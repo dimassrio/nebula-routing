@@ -29,10 +29,32 @@
   </head>
   <body>
 
+    <h3>Intercept</h3>
+    <demo-snippet>
+      <dom-bind id="intercept">
+        <template>
+          <nebula-intercept on-intercept="onIntercept"></nebula-intercept>
+          <a href$="{{path}}">Click me</a>
+          <p><b>{{message}}</b></p>
+        </template>
+      </dom-bind>
+    </demo-snippet>
+
+    <script>
+      intercept.path = window.location.pathname
+      intercept.message = ''
+      intercept.onIntercept = function(e) {
+        e.detail.srcEvent.preventDefault()
+        e.preventDefault()
+        intercept.message = 'Click intercepted'
+      }
+    </script>
+
     <h3>Location</h3>
     <demo-snippet>
       <dom-bind>
         <template>
+          <nebula-intercept></nebula-intercept>
           <nebula-location data="{{location}}"></nebula-location>
           <p>Pathname: <b>[[location.pathname]]</b></p>
         </template>

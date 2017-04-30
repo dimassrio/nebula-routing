@@ -1,6 +1,6 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-green.svg)](https://www.webcomponents.org/element/arsnebula/nebula-validate)
 [![Polymer Version](https://img.shields.io/badge/polymer-v2-blue.svg)](https://www.polymer-project.org)
-[![Sauce Labs Build Status](https://img.shields.io/badge/saucelabs-passing-red.svg)](https://saucelabs.com/beta/builds/8b382fc6efd44803ad7eadc9e165f0ef)
+[![Sauce Labs Build Status](https://img.shields.io/badge/saucelabs-passing-red.svg)](https://saucelabs.com/beta/builds/d818597cc36c4b708a42a4a991e684b4)
 [![Gitter Chat](https://badges.gitter.im/org.png)](https://gitter.im/arsnebula/webcomponents)
 [![Become a Patreon](https://img.shields.io/badge/patreon-support_us-orange.svg)](https://www.patreon.com/arsnebula)
 
@@ -12,6 +12,7 @@ Web components for declarative client-side routing.
 - Pattern matching supports named parameters, optional sections and wildcards
 - Updates the browser URL on the client using the [History API](https://developer.mozilla.org/en-US/docs/Web/API/History)
 - Supports using parameters to interpolate URL changes
+- Can intercept anchor links and resolve on the client
 
 ## Installation
 
@@ -21,13 +22,19 @@ $ bower install -S arsnebula/nebula-routing
 
 ## Getting Started
 
-Import the element.
+Import the package.
 
 ```html
 <link rel="import" href="/bower_components/nebula-routing/nebula-routing.html">
 ```
 
-Add the elements to any component where you want to do conditional rendering based on route information:
+Add the routing elements. The `<nebula-intercept>` element can intercept clicks on anchor elements that have an `href` that targets the local origin.
+
+```html
+<nebula-intercept></nebula-intercept>
+```
+
+The `<nebula-location>` element parses the window location and provides route information including pathnanme, query parameters, and the current hash. The `<nebula-route>` element is used to match a route path to a specified pattern.
 
 ```html
 <nebula-location
@@ -58,7 +65,7 @@ this.$.route.redirect('/test2'})
 this.$.route.redirect({page: 'test2'})
 ```
 
-To perform a `replaceState` rather than `pushState`, set the optional `replace` parameter.
+To perform a `replaceState` rather than `pushState`, set the optional `replace` parameter to `true`.
 
 ```js
 this.$.route.redirect('/test2'}, true)

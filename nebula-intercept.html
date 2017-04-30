@@ -1,55 +1,113 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../nebula-element-mixin/nebula-element-mixin.html">
+
 <script>
 (function() {
+  'use strict'
 
-  window.Nebula = window.Nebula || {}
-  Nebula.Routing = Nebula.Routing || {}
+  // symbols for private members
+  const target = Symbol()
+  const onClick = Symbol()
+  const onTargetChanged = Symbol()
+  const getParentElement = Symbol()
 
-  Nebula.Routing.intercept = function(e) {
+  // symbols for protected members
+  const observe = Symbol.for('Nebula.ElementMixin.observe')
+  const listen = Symbol.for('Nebula.ElementMixin.listen')
+  const unlisten = Symbol.for('Nebula.ElementMixin.unlisten')
+  const fire = Symbol.for('Nebula.ElementMixin.fire')
 
-    // if the default has already been prevented then ignore
-    if (e.defaultPrevented) return
+  /** Intercept local origin anchor elements and route on the client. */
+  class NebulaIntercept extends Nebula.ElementMixin(Polymer.Element) {
 
-    // only left clicks with no special keys
-    if (event.button !== 0 || event.metaKey || event.ctrlKey) return    
+    static get is() { return 'nebula-intercept' }    
 
-    // sometimes other elements are wrapped in an A link, loop through the event
-    // path looking for an A link
-    let anchor
-    for (let i=0; i < e.path.length; i++) {
-      let el = e.path[i]
-      if (el.nodeName === 'A' && el.href) {
-        anchor = el
-        break;
+    get target() {
+      return this[target]
+    }
+
+    set target(node) {
+      if (this.target) this[unlisten](this.target, 'click')
+      this[target] = node
+      this[listen](this.target, 'click', this[onClick])
+    }
+
+    connectedCallback() {
+      if (!this.target) this.target = this[getParentElement]()
+    }
+
+    disconnectedCallback() {
+      if (this.target) this[unlisten](this.target, 'click')
+    }
+
+    [getParentElement]() {
+      let el = this.parentNode
+      while (!(el instanceof HTMLElement || el instanceof ShadowRoot)) {
+        parent = parent.parentNode;
       }
+      const parentElement = (el instanceof ShadowRoot) ? el.host : el
+      return parentElement
     }
 
-    // ignore event if no A link
-    if (!anchor) return
+    [onClick](e) {
 
-    // ignore links not targeted at self
-    if (anchor.target && anchor.target !== '_self') return
-    
-    // ignore routes that are not same origin
-    const url = new URL(anchor.href)
-    if (url.origin !== window.location.origin) return
+      // if the default has already been prevented then ignore
+      if (e.defaultPrevented) return
 
-    // ignore routes that are tagged for ignore
-    const routing = (anchor.dataset && typeof anchor.dataset.routing === 'string') ? anchor.dataset.routing.toLowerCase() : void(0)
-    if (routing && routing === 'ignore') return
+      const button = e.buttons || e.button || 0
+      const metaKey = e.metaKey || false
+      const ctrlKey = e.ctrlKey || false
 
-    // intercept event
-    e.preventDefault()
+      // only left clicks with no special keys
+      if (button !== 0 || metaKey || ctrlKey) return    
 
-    // if the data-route attribute specifies a replace state then do a replace
-    if (routing && routing === "replace") {
-      history.replaceState(null, null, anchor.href)
-    } else {
-      history.pushState(null, null, anchor.href)
+      // is the target an anchor link
+      let anchor = (e.target.nodeName === 'A') ? e.target : void(0)
+
+      // if the event did not come directly from an anchor element, then
+      // search the event path to see if an anchor tag is in the chain
+      if (!anchor && e.path) {
+        for (let i=0; i < e.path.length; i++) {
+          let el = e.path[i]
+          if (el.nodeName === 'A' && el.href) {
+            anchor = el
+            break;
+          }
+        }
+      }
+
+      // ignore event if not an anchor element click
+      if (!anchor) return
+
+      // ignore links not targeted at self
+      if (anchor.target && anchor.target !== '_self') return
+      
+      // ignore routes that are not same origin
+      const url = new URL(anchor.href)
+      if (url.origin !== window.location.origin) return
+
+      // ignore routes that are tagged for ignore
+      const routing = (anchor.dataset && typeof anchor.dataset.routing === 'string') ? anchor.dataset.routing.toLowerCase() : void(0)
+      if (routing && routing === 'ignore') return
+
+      // give parent a chance to cancel intercept
+      if (!this[fire]('intercept', {srcEvent: e}, {bubbles: false, cancelable: true})) return
+
+      // intercept event
+      e.preventDefault()
+
+      // if the data-route attribute specifies a replace state then do a replace
+      if (routing && routing === "replace") {
+        history.replaceState(null, null, anchor.href)
+      } else {
+        history.pushState(null, null, anchor.href)
+      }
+
+      window.dispatchEvent(new PopStateEvent('popstate'))
+
     }
-
-    window.dispatchEvent(new PopStateEvent('popstate'))
   }
 
-  window.addEventListener('click', Nebula.Routing.intercept)
+  customElements.define(NebulaIntercept.is, NebulaIntercept)
 }())
 </script>

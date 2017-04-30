@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <title>nebula-intercept</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <link rel="import" href="../nebula-intercept.html">
+  </head>
+  <body>
+
+    <a id="link" href="/test">Test Link</a>
+
+    <test-fixture id="basic">
+      <template>
+        <nebula-intercept></nebula-intercept>
+      </template>
+    </test-fixture>
+
+    <script>
+    (function() {
+      const click = Symbol.for('Nebula.Test.click')
+
+      suite('basic', function() {
+        let el
+        setup(function() {
+          el = fixture('basic')
+        })
+        test('element is upgraded', function() {
+          assert.equal(el.constructor.is, 'nebula-intercept')
+        })
+        test('default target is parent fixture element', function() {
+          assert.equal(el.target, document.getElementById('basic'))
+        })
+        test('click event is intercepted and prevented', function(done) {
+          el.addEventListener('intercept', (e) => {
+            e.preventDefault()
+            e.detail.srcEvent.preventDefault()
+            done()
+          })
+          el.target = document.body
+          flush(() => {
+            const link = document.getElementById('link')
+            link.click()
+          })
+        })
+      })
+    }())
+    </script>
+  </body>
+</html>

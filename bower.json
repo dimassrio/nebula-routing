@@ -24,9 +24,9 @@
   ],
   "main": "nebula-routing.html",
   "pages": {
-    "nebula-intercept": "docs/nebula-intercept",
-    "nebula-location": "docs/nebula-location",
-    "nebula-route": "docs/nebula-route"
+    "<nebula-intercept>": "docs/nebula-intercept",
+    "<nebula-location>": "docs/nebula-location",
+    "<nebula-route>": "docs/nebula-route"
   },
   "demos": {
     "Demo": "demo/index.html"
