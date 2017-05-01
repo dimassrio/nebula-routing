@@ -1,5 +1,9 @@
 # Change Log
 
+## [v2.1.1](https://github.com/arsnebula/nebula-routing/releases/tag/v2.1.1) (2017-04-30)
+
+- Fixed documentation configuration.
+
 ## [v2.1.0](https://github.com/arsnebula/nebula-routing/releases/tag/v2.1.0) (2017-04-30)
 
 - Converted intercept handler to custom element.
