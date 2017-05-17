@@ -77,9 +77,6 @@ To force the intercept to use the History API `replaceState` rather than the def
   const unlisten = Symbol.for('Nebula.ElementMixin.unlisten')
   const fire = Symbol.for('Nebula.ElementMixin.fire')
 
-  /**
-   * Intercept local origin anchor elements and route on the client.
-   */
   class NebulaIntercept extends Nebula.ElementMixin(Polymer.Element) {
 
     /**
@@ -131,7 +128,7 @@ To force the intercept to use the History API `replaceState` rather than the def
 
     /**
      * A property observer triggered when the value of the `target` property is changed.
-     * @param {HTMLNode} target - The new value of the property.
+     * @param {HTMLNode} target - The current `target` property value.
      * @private
      */
     [onTargetChanged](target) {

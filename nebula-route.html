@@ -78,32 +78,38 @@ el.redirect({
   // symbols for protected members
   const observe = Symbol.for('Nebula.ElementMixin.observe')
 
-  /**
-   * Parses and tests a URL path against a specified pattern.
-   */
   class NebulaRoute extends Nebula.ElementMixin(Polymer.Element) {
 
     /**
      * Gets the custom element name.
-     * @type {String}
      * @protected
      */
     static get is() { return 'nebula-route' }
 
     /**
-     * Gets the property definitions for data binding.
-     * @type {Object}
+     * Gets the property definitions for Polymer data binding.
      * @protected
      */
     static get properties() {
       return {
+        /**
+         * A route path to evaluate.
+         */
         path: {
           type: String
         },
+        /**
+         * A route path to evaluate.
+         * If not set, by default, all route paths will be matched and parsed.
+         */
         pattern: {
           type: String,
           value: '*'
         },
+        /**
+         * The parsed route information.
+         * If the route `path` does not match the `pattern`, the value will be `undefined`.
+         */
         data: {
           type: Object,
           notify: true,
@@ -131,9 +137,9 @@ el.redirect({
 
     /**
       * Parses the path and evaluates the pattern for a match.
-      * @param {string} path The path to match against the current pattern.
-      * @param {string} pattern The pattern to match.
-      * @return {boolean} True if the path matches the pattern, otherwise false.
+      * @param {string} path - The path to match against the current pattern.
+      * @param {string} pattern - The pattern to match.
+      * @returns {boolean} True if the path matches the pattern, otherwise false.
       * @private
     */
     [matchPath](path, pattern) {
@@ -148,8 +154,10 @@ el.redirect({
 
     /** 
      * Evaluates the route target argument and generates a new URL.
+     * The `target` route data can be a route path, or an object containing current route pattern parameters.
+     * The full url of the new route is returned.
      * @param {string | Object} target - Target route information.
-     * @return {string} The `url` to the specified target route.
+     * @returns {string} The url to the specified target route.
      */
     getRouteUrl(target) {
       let url
@@ -177,10 +185,13 @@ el.redirect({
     }
 
     /**
-     * Changes the window location using the History API.
-     * @param {string | Object} target - The target route.
-     * @param {boolean} replace - Whether to push or replace the current path.
-     * @return {string} The `url` of the new route location.
+     * Changes the window location (using the History API) for the specified route data.
+     * The `target` route data can be a route path, or an object containing current route pattern parameters.
+     * Set the `replace` argument to true to use the `replaceState` rather than `pushState`.
+     * The full url of the new route is returned.
+     * @param {string | Object} target - The target route information.
+     * @param {boolean} [false] replace - Whether to push or replace the current path.
+     * @returns {string} The url of the new route location.
      */
     redirect(target, replace = false) {
       const url = this.getRouteUrl(target)

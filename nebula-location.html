@@ -44,9 +44,6 @@ Location data is provided as a single object to make it easy for property observ
   const listen = Symbol.for('Nebula.ElementMixin.listen')
   const unlisten = Symbol.for('Nebula.ElementMixin.unlisten')
 
-  /**
-   * Detects changes to the browser location to support client-side routing.
-   */
   class NebulaLocation extends Nebula.ElementMixin(Polymer.Element) {
 
     /**
@@ -61,6 +58,9 @@ Location data is provided as a single object to make it easy for property observ
      */
     static get properties() {
       return {
+        /**
+         * Routing information parsed from `window location`.
+         */
         data: {
           type: Object,
           notify: true,

@@ -1,6 +1,6 @@
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-green.svg)](https://www.webcomponents.org/element/arsnebula/nebula-validate)
 [![Polymer Version](https://img.shields.io/badge/polymer-v2-blue.svg)](https://www.polymer-project.org)
-[![Sauce Labs Build Status](https://img.shields.io/badge/saucelabs-passing-red.svg)](https://saucelabs.com/beta/builds/d818597cc36c4b708a42a4a991e684b4)
+[![Sauce Labs Build Status](https://img.shields.io/badge/saucelabs-passing-red.svg)](https://saucelabs.com/beta/builds/47bb62d1bb4145709386901add0100b2)
 [![Gitter Chat](https://badges.gitter.im/org.png)](https://gitter.im/arsnebula/webcomponents)
 [![Become a Patreon](https://img.shields.io/badge/patreon-support_us-orange.svg)](https://www.patreon.com/arsnebula)
 
@@ -28,7 +28,7 @@ Import the package.
 <link rel="import" href="/bower_components/nebula-routing/nebula-routing.html">
 ```
 
-Add the routing elements. The `<nebula-intercept>` element can intercept clicks on anchor elements that have an `href` that targets the local origin.
+Add the routing elements. The `<nebula-intercept>` element can intercept clicks on anchor elements that have an `href` that targets the local origin. Typically, you will add a single instance to your top-level application element, or the HTML body element.
 
 ```html
 <nebula-intercept></nebula-intercept>
