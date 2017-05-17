@@ -2,6 +2,72 @@
 <link rel="import" href="../nebula-element-mixin/nebula-element-mixin.html">
 <link rel="import" href="url-pattern.html">
 
+<!--
+`<nebula-route>` is a custom element that parses and tests a URL path against a specified pattern.
+
+## Import
+
+```html
+<link rel="import" href="/bower_components/nebula-routing/nebula-route.html">
+```
+
+## Usage
+
+The `pattern` property value can include named parameters, optional segments, and wildcards. To define a named parameter, using a colon followed by the parameter name. To define an optional segment, surround it with parentheses. For a wildcard, use an asterisk.
+
+The following examples demonstrate various ways you can combine named parameters, optional segments and wildcards to match any route path. The use of optional segments and wildcards provide the ability to either precisely match specific url paths, or perform partial matching.
+
+```text
+/
+/*
+/:segment
+/:segment(/)
+/(:segment)(/)(/*)
+/(:segment)(/:feature)(/)(/*)
+```
+
+<i>For more information on pattern matching, refer to the [url-pattern](https://github.com/snd/url-pattern/blob/master/README.md) library documentation.</i>
+
+If the route pattern is matched, the `data` property is updated with any parameters parsed from the path. If the route pattern contains one or more wildcards, then a special `_` key/value is provided with the wildcard segments in the path.
+
+The following example demonstrates route data created from matching a sample path to a pattern that contains named parameters, optional segments and a wildcard:
+
+```js
+var el = document.getElementById('#route')
+el.pattern = '/(:module)(/:page)(/)(/*)'
+el.path = '/accounts/login/oauth'
+```
+
+If the route was matched, the `data` property would contain the following:
+
+```json
+{
+  "_": "oauth"
+  "module": "accounts",
+  "page": "login"
+}
+```
+
+If the route is not matched, the `data` property is set to `null`.
+
+The element also provides an easy way to update the current browser location using the History pushState API. The `redirect` method accepts a path string, or you can pass an object with any named parameters defined in the route pattern.
+
+The following example demonstrates how to redirect using a path, or a set of parameters:
+
+```js
+const el = document.getElementById('#route')
+
+// update the route using a path
+el.redirect('/accounts/register')
+
+// update the route using parameters
+el.redirect({
+  'module': 'accounts',
+  'page': 'register'
+})
+```
+
+-->
 <script>
 (function() {
   'use strict'
@@ -12,20 +78,22 @@
   // symbols for protected members
   const observe = Symbol.for('Nebula.ElementMixin.observe')
 
+  /**
+   * Parses and tests a URL path against a specified pattern.
+   */
   class NebulaRoute extends Nebula.ElementMixin(Polymer.Element) {
 
     /**
      * Gets the custom element name.
-     * @type {string}
+     * @type {String}
+     * @protected
      */
     static get is() { return 'nebula-route' }
 
     /**
      * Gets the property definitions for data binding.
      * @type {Object}
-     * @property {string} path - A path to parse and evaluate against the route pattern.
-     * @property {string} pattern - A pattern to evaluate against the current route path.
-     * @property {Object} data - The parsed route data if the route was matched.
+     * @protected
      */
     static get properties() {
       return {
@@ -45,7 +113,7 @@
     }
 
     /**
-     * Lifecycle callback invoked when a new element instance is created.
+     * Creates a new instance of the custom element.
      */
     constructor() {
       super()
@@ -53,7 +121,8 @@
     }
 
     /**
-     * Lifecycle callback handler triggered when data-binding initialization is complete.
+     * The Polymer lifecycle callback handler triggered when initialization is complete.
+     * @protected
      */
     ready() {
       super.ready();
@@ -79,6 +148,8 @@
 
     /** 
      * Evaluates the route target argument and generates a new URL.
+     * @param {string | Object} target - Target route information.
+     * @return {string} The `url` to the specified target route.
      */
     getRouteUrl(target) {
       let url
@@ -109,6 +180,7 @@
      * Changes the window location using the History API.
      * @param {string | Object} target - The target route.
      * @param {boolean} replace - Whether to push or replace the current path.
+     * @return {string} The `url` of the new route location.
      */
     redirect(target, replace = false) {
       const url = this.getRouteUrl(target)

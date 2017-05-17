@@ -1,6 +1,66 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../nebula-element-mixin/nebula-element-mixin.html">
 
+<!--
+The `<nebula-intercept>` custom element is a non-visual component that can intercept `click` events on anchor tags that target local origin paths, and process the route change on the client using the browser History API.
+
+By default, the element targets its parent element. The typical use case is to add a single instance of the intercept to your top-level application element, or directly in the `body` tag of a web page. By setting the `target` property of the element to an alternative parent node, it is possible to control the scope of events that are intercepted.
+
+Only standard clicks are intercepted. If the user right clicks an element to open the link in a new tab or window, the event is ignored.
+
+## Import
+
+```html
+<link rel="import" href="/bower_components/nebula-routing/nebula-intercept.html">
+```
+
+## Usage
+
+Add an instance of the element to interecept all events that bubble through the parent node.
+
+```html
+<nebula-intercept id="intercept"></nebula-intercept>
+```
+
+To target a specific node, set the `target` property. In the example below, setting the target to the `document.body` will automatically intercept all click events for the entire page.
+
+```js
+  this.$.intercept.target = document.body
+```
+
+Any anchor element with an `href` that matches the local origin will be intercepted.
+
+```html
+<a href="/account/login">
+  Login
+</a>
+```
+
+Anchor tags with an `href` that is not local origin, or that has a target other than the default will be ignored.
+
+```html
+<a href="https://www.wikipedia.org" target="_blank">
+  Login
+</a>
+```
+
+To force the intercept to ignore a local link (to force it to reload the page), set the `data-routing` attribute value to `ignore`.
+
+```html
+<a href="/account/login" data-routing="ignore">
+  Login
+</a>
+```
+
+To force the intercept to use the History API `replaceState` rather than the default `pushState` behavior, set the `data-routing` attribute value to `replace`.
+
+```html
+<a href="/account/login" data-routing="replace">
+  Login
+</a>
+```
+
+-->
 <script>
 (function() {
   'use strict'
@@ -17,29 +77,75 @@
   const unlisten = Symbol.for('Nebula.ElementMixin.unlisten')
   const fire = Symbol.for('Nebula.ElementMixin.fire')
 
-  /** Intercept local origin anchor elements and route on the client. */
+  /**
+   * Intercept local origin anchor elements and route on the client.
+   */
   class NebulaIntercept extends Nebula.ElementMixin(Polymer.Element) {
 
-    static get is() { return 'nebula-intercept' }    
+    /**
+     * Gets the custom element tag name.
+     * @protected
+     */
+    static get is() { return 'nebula-intercept' }
 
-    get target() {
-      return this[target]
+    /**
+     * Gets the Polymer property definitions for data binding.
+     * @protected
+     */
+    static get properties() {
+      return {
+        /**
+         * The node to intercept event on.
+         * If not set, the parent element will be used as a default.
+         */
+        target: {
+          type: Object
+        }
+      }
     }
 
-    set target(node) {
-      if (this.target) this[unlisten](this.target, 'click')
-      this[target] = node
-      this[listen](this.target, 'click', this[onClick])
+    /**
+     * Creates a new instance of the element.
+     */
+    constructor() {
+      super()
+      this[observe]('target', this[onTargetChanged])
     }
 
+    /**
+     * The custom element lifecycle callback triggered when the element is attached to the DOM.
+     * @protected
+     */
     connectedCallback() {
       if (!this.target) this.target = this[getParentElement]()
     }
 
+    /**
+     * The custom element lifecycle callback triggered when the element is removed from the DOM.
+     * @protected
+     */
     disconnectedCallback() {
-      if (this.target) this[unlisten](this.target, 'click')
+      if (this[target]) this[unlisten](this[target], 'click')
+      delete this[target]
     }
 
+    /**
+     * A property observer triggered when the value of the `target` property is changed.
+     * @param {HTMLNode} target - The new value of the property.
+     * @private
+     */
+    [onTargetChanged](target) {
+      if (!target) return
+      if (this[target]) this[unlisten](this[target], 'click')
+      this[target] = target
+      this[listen](target, 'click', this[onClick])
+    }
+
+    /**
+     * A helper utility to find the parent element.
+     * @return {HTMLElement} The parent element.
+     * @private
+     */
     [getParentElement]() {
       let el = this.parentNode
       while (!(el instanceof HTMLElement || el instanceof ShadowRoot)) {
@@ -49,6 +155,11 @@
       return parentElement
     }
 
+    /**
+     * An event handler triggered when the element is clicked.
+     * @param {MouseEvent} e - Information about the event.
+     * @private
+     */
     [onClick](e) {
 
       // if the default has already been prevented then ignore
@@ -81,7 +192,13 @@
 
       // ignore links not targeted at self
       if (anchor.target && anchor.target !== '_self') return
-      
+
+      // prevent routes that are the same as the current location
+      if (anchor.href === window.location.href) {
+        e.preventDefault() 
+        return
+      }
+
       // ignore routes that are not same origin
       const url = new URL(anchor.href)
       if (url.origin !== window.location.origin) return

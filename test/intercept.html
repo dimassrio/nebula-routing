@@ -10,7 +10,7 @@
   </head>
   <body>
 
-    <a id="link" href="/test">Test Link</a>
+    <a id="link" href="/test" data-routing="ignore">Test Link</a>
 
     <test-fixture id="basic">
       <template>
@@ -33,17 +33,9 @@
         test('default target is parent fixture element', function() {
           assert.equal(el.target, document.getElementById('basic'))
         })
-        test('click event is intercepted and prevented', function(done) {
-          el.addEventListener('intercept', (e) => {
-            e.preventDefault()
-            e.detail.srcEvent.preventDefault()
-            done()
-          })
+        test('target property is updated', function() {
           el.target = document.body
-          flush(() => {
-            const link = document.getElementById('link')
-            link.click()
-          })
+          assert.equal(el.target, document.body)
         })
       })
     }())

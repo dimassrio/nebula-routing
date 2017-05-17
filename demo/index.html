@@ -41,7 +41,7 @@
     </demo-snippet>
 
     <script>
-      intercept.path = window.location.pathname
+      intercept.path = window.location.pathname + "?test=true"
       intercept.message = ''
       intercept.onIntercept = function(e) {
         e.detail.srcEvent.preventDefault()

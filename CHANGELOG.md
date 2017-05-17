@@ -1,5 +1,10 @@
 # Change Log
 
+## [v2.1.2](https://github.com/arsnebula/nebula-routing/releases/tag/v2.1.2) (2017-05-17)
+
+- Added intercept ignore rule for routes that match current.
+- Updated inline comments for new API documentation generation.
+
 ## [v2.1.1](https://github.com/arsnebula/nebula-routing/releases/tag/v2.1.1) (2017-04-30)
 
 - Fixed documentation configuration.

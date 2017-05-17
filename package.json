@@ -1,6 +1,6 @@
 {
   "name": "nebula-routing",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A client-side router for single-page applications.",
   "private": true,
   "license": "ISC",
@@ -15,6 +15,6 @@
   },
   "devDependencies": {
     "browser-sync": "latest",
-    "web-component-tester": "^6.0.0 || 6.0.0-prerelease.5"
+    "web-component-tester": "^6.0.0"
   }
 }

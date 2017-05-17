@@ -2,6 +2,37 @@
 <link rel="import" href="../nebula-element-mixin/nebula-element-mixin.html">
 <link rel="import" href="qs.html">
 
+<!--
+`<nebula-location>` is a custom element that detects changes to the browser location to support client-side routing. Location data is automatically updated when a `window.popstate` event is triggered.
+
+## Import
+
+```html
+<link rel="import" href="/bower_components/nebula-routing/nebula-location.html">
+```
+
+## Usage
+
+The element can be added anywhere that updated location information is needed to support route parsing or just to detect location changes.
+
+```html
+<nebula-location data="{{location}}" on-data-changed="_onLocationChanged"></nebula-location>
+```
+
+Location data is provided as a single object to make it easy for property observers to receive all location data once as a single event.
+
+```json
+{
+  "pathname": "/",
+  "hash": "#a-hash",
+  "searchParams": {
+    "param1": "value",
+    "param2": "value"
+  }
+}
+```
+
+-->
 <script>
 (function() {
   'use strict'
@@ -14,20 +45,19 @@
   const unlisten = Symbol.for('Nebula.ElementMixin.unlisten')
 
   /**
-   * Validate forms and data with Validate.js
+   * Detects changes to the browser location to support client-side routing.
    */
   class NebulaLocation extends Nebula.ElementMixin(Polymer.Element) {
 
     /**
-     * Gets the custom element name.
-     * @type {string}
+     * Gets the custom element tag name.
+     * @protected
      */
     static get is() { return 'nebula-location' }
 
     /**
-     * Gets the property definitions for data binding.
-     * @type {Object}
-     * @property {Object} data - Parsed location data.
+     * Gets the property definitions for Polymer data binding.
+     * @protected
      */
     static get properties() {
       return {
@@ -40,8 +70,8 @@
     }
 
     /**
-     * Lifecycle callback handler triggered when data-binding initialization is complete.
-     * @public
+     * The Polymer element lifecycle callback triggered when initialization is complete.
+     * @protected
      */
     ready() {
       super.ready();
@@ -49,7 +79,8 @@
     }
 
     /**
-     * Lifecycle callback handler triggered when element is attached to the DOM.
+     * The custom element lifecycle callback triggered when the element is attached to the DOM.
+     * @protected
      */
     connectedCallback() {
       super.connectedCallback()
@@ -58,7 +89,8 @@
     }
 
     /**
-     * Lifecycle callback handler triggered when element is detached from the DOM.
+     * The custom element lifecycle callback triggered when the element is detached from the DOM.
+     * @protected
      */
     disconnectedCallback() {
       super.disconnectedCallback()
@@ -66,7 +98,7 @@
     }
 
     /**
-     * Parse the window location and update location data.
+     * Parses the window location and updates the `data` property with client routing location details.
      * @private
      */
     [parseLocation]() {
