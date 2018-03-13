@@ -205,8 +205,8 @@ el.redirect({
 
       // force a popstate event since default behavior is that
       // one is not fired on pushstate
-      window.dispatchEvent(new PopStateEvent('popstate'))
-
+      // window.dispatchEvent(new PopStateEvent('popstate'))
+      window.dispatchEvent(new CustomEvent('popstate'));
       return url
     }
 
