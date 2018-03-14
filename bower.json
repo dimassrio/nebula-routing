@@ -1,12 +1,13 @@
 {
-  "name": "nebula-routing",
-  "description": "A client-side router for single-page applications.",
+  "name": "nebula-routing-forking",
+  "description": "A client-side router for single-page applications. Forking to circumvent problem with IE",
   "license": "ISC",
   "private": true,
   "authors": [
-    "Chris Beckett <chrisb@arsnebula.com>"
+    "Chris Beckett <chrisb@arsnebula.com>",
+    "Dimas Satrio <dimassrio@gmail.com>"
   ],
-  "homepage": "https://github.com/arsnebula/nebula-routing#README",
+  "homepage": "https://github.com/dimassrio/nebula-routing#README",
   "ignore": [
     "**/.*",
     "node_modules",
